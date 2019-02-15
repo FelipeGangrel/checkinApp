@@ -7,10 +7,6 @@ import Login from "./screens/login";
 import SelectEvent from "./screens/select-event";
 import Main from "./navigators/main";
 
-// export const Login = Login;
-// export const SelectEvent = SelectEvent;
-// export const Main = Main;
-
 // vamos expor apenas esta função que decidirá qual navegação servir
 export const createRootNavigator = (isSignedIn = false, hasActiveEvent = null) => {
 

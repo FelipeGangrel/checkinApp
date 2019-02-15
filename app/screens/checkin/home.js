@@ -5,7 +5,6 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  RefreshControl,
   ActivityIndicator
 } from "react-native";
 import { EvilIcons, Ionicons } from "@expo/vector-icons";

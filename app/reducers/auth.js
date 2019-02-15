@@ -3,13 +3,14 @@ import axios from "axios";
 const INITIAL_STATE = {
   user: {},
   formUser: {
-    email: "",
-    senha: ""
+    email: "rodrigo@agenciaguppy.com.br",
+    senha: "rljr2010",
   },
   isSignedIn: false,
   isLoading: false,
   hasError: false,
-  hasActiveEvent: false
+  hasActiveEvent: false,
+  teste: "teste",
 };
 
 const LOGIN_REQUEST_START = "LOGIN_REQUEST_START";
@@ -19,6 +20,7 @@ const USER_HAS_ACTIVE_EVENT = "USER_HAS_ACTIVE_EVENT";
 const LOGIN_CLEAR_ERROR = "LOGIN_CLEAR_ERROR";
 const USER_UPDATE_FORMUSER = "USER_UPDATE_FORMUSER";
 const USER_LOGOUT = "USER_LOGOUT";
+const AUTH_RESET = "AUTH_RESET";
 
 // reducer
 export const authReducer = (state = INITIAL_STATE, action) => {
@@ -35,6 +37,8 @@ export const authReducer = (state = INITIAL_STATE, action) => {
       return _loginClearError(state);
     case USER_UPDATE_FORMUSER:
       return _userUpdateFormUser(state, action);
+    case AUTH_RESET:
+      return Object.assign({}, state, INITIAL_STATE);
     default:
       return state;
   }
@@ -186,9 +190,14 @@ const clearError = () => ({
   type: LOGIN_CLEAR_ERROR
 });
 
+const authReset = () => ({
+  type: AUTH_RESET,
+});
+
 export const authActions = {
   signInUser,
   signOutUser,
   switchActiveEvent,
-  clearError
+  clearError,
+  authReset,
 };

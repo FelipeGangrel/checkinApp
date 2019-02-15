@@ -3,19 +3,18 @@ import { connect } from "react-redux";
 import { createRootNavigator } from "./router";
 import navigationService from "./services/navigation-service";
 import { credenciadosActions } from "./reducers/credenciados";
+import { authActions } from "./reducers/auth";
 
 class AppContent extends React.Component {
 
   constructor(props) {
     super(props);
+    // this.props.authReset(); // resetar auth
   }
 
   render() {
     
-    const { auth, fetchListaFromStart } = this.props;
-
-    // fetchListaFromStart(); // usar para limpar o cache no maldito ios
-
+    const { auth } = this.props;
     const isSignedIn = auth.isSignedIn;
     const hasActiveEvent = auth.hasActiveEvent;
 
@@ -33,6 +32,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  authReset: () => dispatch(authActions.authReset()),
   fetchListaFromStart: () => dispatch(credenciadosActions.fetchListaFromStart()),
 });
 

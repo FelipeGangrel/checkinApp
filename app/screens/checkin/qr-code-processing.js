@@ -26,8 +26,7 @@ export default class QrCodeProcessing extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
-
-
+        
           <View style={styles.containerScreen}>
             <View style={styles.containerEticket}>
               <View style={styles.eticketBox}>

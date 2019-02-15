@@ -18,8 +18,8 @@ class Home extends React.Component {
 
   state = {
     formUser: {
-      email: "rodrigo@agenciaguppy.com.br",
-      senha: "rljr2010",
+      email: "",
+      senha: "",
     }
   }
 
@@ -28,9 +28,7 @@ class Home extends React.Component {
   }
   
   componentDidMount() {
-    const { formUser, clearError, hasError } = this.props;
-    console.log('formUser', formUser);
-    console.log('hasError', hasError);
+    const { formUser, hasError, clearError } = this.props;
     if (hasError) {
       clearError();
       Alert.alert(
@@ -43,7 +41,7 @@ class Home extends React.Component {
     });
   }
 
-  _handleSignInUser = navigate => {
+  _handleSignInUser = () => {
     const { formUser } = this.state;
     const { signInUser } = this.props;
     signInUser(formUser);
@@ -113,7 +111,7 @@ class Home extends React.Component {
               <Button
                 title="ENTRAR" block rounded large elevated disabled={ !this._isSignInButtonEnabled() }
                 variant="light"
-                onPress={() => this._handleSignInUser(navigate) } 
+                onPress={() => this._handleSignInUser() } 
               ></Button>
             </View>
           </SafeAreaView>

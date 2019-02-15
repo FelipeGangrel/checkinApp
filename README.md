@@ -4,5 +4,5 @@
 
 ### Limpar cache da aplicação
 ```sh
-$ exp r -c
+$ expo r -c
 ```
