@@ -1,9 +1,10 @@
 import axios from "axios";
+import API_URL from "./api-paths";
 
 const INITIAL_STATE = {
   user: {},
   formUser: {
-    email: "rodrigo@agenciaguppy.com.br",
+    email: "vitor@sivis.com.br",
     senha: "rljr2010",
   },
   isSignedIn: false,
@@ -131,8 +132,9 @@ const signInUser = user => {
       email: user.email, 
       senha: user.senha}));
 
-    const postUrl =
-      "https://ticket4you.com.br/web/Api/Controller/Comprador/login.php";
+    const postUrl = `${API_URL}Api/Controller/Comprador/login.php`;
+
+    console.log(postUrl);
 
     let formData = new FormData();
 
@@ -190,7 +192,7 @@ const clearError = () => ({
   type: LOGIN_CLEAR_ERROR
 });
 
-const authReset = () => ({
+const reset = () => ({
   type: AUTH_RESET,
 });
 
@@ -199,5 +201,5 @@ export const authActions = {
   signOutUser,
   switchActiveEvent,
   clearError,
-  authReset,
+  reset,
 };

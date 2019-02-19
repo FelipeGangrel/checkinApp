@@ -1,11 +1,11 @@
 import React from "react";
-import { 
-  StyleSheet, 
-  View, 
+import {
+  StyleSheet,
+  View,
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  Alert,
+  Alert
 } from "react-native";
 import { LinearGradient } from "expo";
 import { connect } from "react-redux";
@@ -15,29 +15,28 @@ import { colors } from "../../colors";
 import { authActions } from "../../reducers/auth";
 
 class Home extends React.Component {
-
   state = {
     formUser: {
       email: "",
-      senha: "",
+      senha: ""
     }
-  }
+  };
 
   constructor(props) {
     super(props);
   }
-  
+
   componentDidMount() {
     const { formUser, hasError, clearError } = this.props;
     if (hasError) {
       clearError();
       Alert.alert(
-        'Ooops',
-        'E-mail e/ou senha incorretos. Por vafor, cheque suas credenciais de acesso.'
+        "Ooops",
+        "E-mail e/ou senha incorretos. Por vafor, cheque suas credenciais de acesso."
       );
     }
     this.setState({
-      formUser,
+      formUser
     });
   }
 
@@ -45,7 +44,7 @@ class Home extends React.Component {
     const { formUser } = this.state;
     const { signInUser } = this.props;
     signInUser(formUser);
-  }
+  };
 
   _isSignInButtonEnabled = () => {
     const { email, senha } = this.state.formUser;
@@ -55,69 +54,71 @@ class Home extends React.Component {
     let isEmailValid = email !== null && exp.test(String(email).toLowerCase());
     let isSenhaValid = senha !== null && String(senha).length > 0;
     return isEmailValid && isSenhaValid;
-  }
+  };
 
   render() {
-
-    const { navigate } = this.props.navigation;
-
     return (
-
-      <View style={{flex: 1}}>
-        <LinearGradient style={{ flex: 1}} colors={[
-          colors.primary.base,
-          colors.primary.alternative,
-        ]}>
-          <SafeAreaView style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
+        <LinearGradient
+          style={{ flex: 1 }}
+          colors={[colors.primary.base, colors.primary.alternative]}
+        >
+          <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.containerScreen}>
               <View style={styles.containerForm}>
-
-                <TouchableOpacity style={styles.itemInput}> 
-                  <TextInput value={ this.state.formUser.email }
-                    onChangeText={ (email) => {
+                <TouchableOpacity style={styles.itemInput}>
+                  <TextInput
+                    value={this.state.formUser.email}
+                    onChangeText={email => {
                       let { formUser } = this.state;
                       formUser.email = email;
-                      this.setState({ 
+                      this.setState({
                         formUser
                       });
                     }}
                     placeholder="e-mail"
-                    placeholderTextColor="#FFFFFF" 
-                    autoCapitalize="none" 
-                    keyboardType="email-address" 
-                    textContentType="username"  
-                    style={styles.textInput} />
+                    placeholderTextColor="#FFFFFF"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    textContentType="username"
+                    style={styles.textInput}
+                  />
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.itemInput}>
-                  <TextInput value={ this.state.formUser.senha }
-                    onChangeText={ (senha) => {
+                  <TextInput
+                    value={this.state.formUser.senha}
+                    onChangeText={senha => {
                       let { formUser } = this.state;
                       formUser.senha = senha;
-                      this.setState({ 
+                      this.setState({
                         formUser
                       });
                     }}
-                    placeholder="senha" 
-                    placeholderTextColor="#FFFFFF" 
-                    textContentType="password" 
-                    secureTextEntry 
-                    style={styles.textInput} />
+                    placeholder="senha"
+                    placeholderTextColor="#FFFFFF"
+                    textContentType="password"
+                    secureTextEntry
+                    style={styles.textInput}
+                  />
                 </TouchableOpacity>
-
               </View>
             </View>
             <View style={{ flexBasis: 100, alignSelf: "center", width: "80%" }}>
               <Button
-                title="ENTRAR" block rounded large elevated disabled={ !this._isSignInButtonEnabled() }
+                title="ENTRAR"
+                block
+                rounded
+                large
+                elevated
+                disabled={!this._isSignInButtonEnabled()}
                 variant="light"
-                onPress={() => this._handleSignInUser() } 
-              ></Button>
+                onPress={() => this._handleSignInUser()}
+              />
             </View>
           </SafeAreaView>
         </LinearGradient>
       </View>
-
     );
   }
 }
@@ -127,12 +128,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "stretch",
+    alignItems: "stretch"
   },
   containerForm: {
     flex: 0.8,
     alignItems: "stretch",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   itemInput: {
     marginTop: 20,
@@ -141,23 +142,26 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     position: "relative",
     paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingVertical: 15
   },
   textInput: {
     color: "#FFFFFF",
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 18
   }
 });
 
 const mapStateToProps = state => ({
   formUser: state.auth.formUser,
-  hasError: state.auth.hasError,
+  hasError: state.auth.hasError
 });
 
 const mapDispatchToProps = dispatch => ({
   signInUser: user => dispatch(authActions.signInUser(user)),
-  clearError: () => dispatch(authActions.clearError()),
+  clearError: () => dispatch(authActions.clearError())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

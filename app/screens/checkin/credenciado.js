@@ -51,7 +51,7 @@ class Credenciado extends React.PureComponent {
         <View style={{ alignItems: "center" }}>
           <Image
             style={styles.cardAvatarImage}
-            source={{ uri: credenciado.avatar.large }}
+            source={{ uri: credenciado.avatar.thumbnail }}
           />
           <View style={{ alignItems: "center", marginTop: 20 }}>
             <Text style={styles.textHeder1}>{this.state.credenciado.nome}</Text>

@@ -1,9 +1,13 @@
 import axios from "axios";
 import update from "immutability-helper";
+import API_URL from "./api-paths";
 
 const INITIAL_STATE = {
   lista: [],
   page: 0,
+  next: false,
+  prev: false,
+  totalPages: 0,
   filter: "",
   isLoading: false,
   hasError: false
@@ -18,8 +22,6 @@ const CREDENCIADOS_RESET = "CREDENCIADOS_RESET";
 
 export const credenciadosReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case CREDENCIADOS_RESET:
-      return _credenciadosReset(state);
     case CREDENCIADOS_REQUEST_START:
       return _requestStart(state);
     case CREDENCIADOS_REQUEST_SUCCESS:
@@ -30,17 +32,14 @@ export const credenciadosReducer = (state = INITIAL_STATE, action) => {
       return _filterChange(state, action);
     case CREDENCIADO_UPDATE:
       return _credenciadoUpdate(state, action);
+    case CREDENCIADOS_RESET:
+      return Object.assign({}, state, INITIAL_STATE);
     default:
       return state;
   }
 };
 
 // métodos a serem usados dentro do reducer
-
-const _credenciadosReset = state => {
-  return Object.assign({}, state, INITIAL_STATE);
-};
-
 const _requestStart = state => {
   return Object.assign({}, state, {
     page: state.page + 1,
@@ -48,10 +47,6 @@ const _requestStart = state => {
     hasError: false
   });
 };
-
-
-
-
 
 const _requestSuccess = (state, action) => {
   const { lista } = action;
@@ -124,26 +119,20 @@ const _storeLista = data => {
   if (Array.isArray(data)) {
 
     const lista = data.map(item => {
-      const {
-        name,
-        email,
-        picture,
-        login: { uuid }
-      } = item;
-
-      const rand = Math.random();
 
       return {
-        id: uuid,
-        nome: `${name.first} ${name.last}`,
-        email: email,
-        necessidadesEspeciais: rand >= 0.9,
+        id: item.id,
+        nome: item.nome,
+        email: item.email,
+        sexo: item.sexo,
+        empresa: item.empresa,
+        ingresso: item.ingresso,
+        necessidadesEspeciais: item.necessidades_especiais,
+        presente: item.presente,
+        eticket: item.eticket,
         avatar: {
-          large: picture.large,
-          medium: picture.medium,
-          thumbnail: picture.thumbnail
+          thumbnail: item.thumbnail
         },
-        presente: rand >= 0.5
       };
     });
 
@@ -190,11 +179,21 @@ const fetchLista = () => {
 
       const perPage = 10;
       const page = getState().credenciados.page;
-      const fetchUrl = `https://randomuser.me/api/?seed=2&page=${page}&results=${perPage}`;
+      const evento = getState().eventos.activeEvent.id;
+      // const fetchUrl = `https://randomuser.me/api/?seed=2&page=${page}&results=${perPage}`;
+      const fetchUrl = 
+      `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=Listar&page=${page}&evento=${evento}`;
+
+      console.log(fetchUrl);
 
       axios
         .get(fetchUrl)
-        .then(response => dispatch(_storeLista(response.data.results)))
+        .then(response => {
+          console.log(response);
+          if (response.data.success) {
+            dispatch(_storeLista(response.data.data))
+          }
+        })
         .catch(error => dispatch(_handleError(error)));
     }
   };
@@ -215,9 +214,14 @@ const updateCredenciado = credenciado => {
   };
 };
 
+const reset = () => ({
+  type: CREDENCIADOS_RESET,
+});
+
 export const credenciadosActions = {
   fetchLista,
   fetchListaFromStart,
   filterLista,
-  updateCredenciado
+  updateCredenciado,
+  reset,
 };

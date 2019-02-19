@@ -5,6 +5,7 @@ const INITIAL_STATE = {
 
 const EVENTS_SWITCH_ACTIVE_EVENT = "EVENTS_SWITCH_ACTIVE_EVENT";
 const EVENTS_UPDATE_LIST = "EVENTS_UPDATE_LIST";
+const EVENTS_RESET = "EVENTS_RESET";
 
 export const eventosReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -12,6 +13,8 @@ export const eventosReducer = (state = INITIAL_STATE, action) => {
       return _actionEventsSwitchActiveEvent(state, action);
     case EVENTS_UPDATE_LIST:
       return _actionEventsUpdateList(state, action);
+    case EVENTS_RESET:
+      return Object.assign({}, state, INITIAL_STATE);
     default:
       return state;
   }
@@ -61,7 +64,12 @@ const updateList = events => ({
   events
 });
 
+const reset = () => ({
+  type: EVENTS_RESET,
+});
+
 export const eventosActions = {
   switchActiveEvent,
-  updateList
+  updateList,
+  reset,
 };
