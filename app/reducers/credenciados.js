@@ -5,7 +5,7 @@ import API_URL from "./api-paths";
 const INITIAL_STATE = {
   lista: [],
   page: 0,
-  next: false,
+  next: true,
   prev: false,
   totalPages: 0,
   filter: "",
@@ -234,6 +234,9 @@ const fetchLista = () => {
           }
         })
         .catch(error => dispatch(_handleError(error)));
+
+    
+
     }
   };
 };

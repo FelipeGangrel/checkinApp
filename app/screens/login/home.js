@@ -15,6 +15,7 @@ import { colors } from "../../colors";
 import { authActions } from "../../reducers/auth";
 
 class Home extends React.Component {
+
   state = {
     formUser: {
       email: "",
@@ -26,8 +27,10 @@ class Home extends React.Component {
     super(props);
   }
 
-  componentDidMount() {
-    const { formUser, hasError, clearError } = this.props;
+
+  componentDidUpdate() {
+    const { hasError, clearError } = this.props;
+    console.log('hasError', hasError);
     if (hasError) {
       clearError();
       Alert.alert(
@@ -35,28 +38,35 @@ class Home extends React.Component {
         "E-mail e/ou senha incorretos. Por vafor, cheque suas credenciais de acesso."
       );
     }
+  }
+  
+  componentDidMount() {
+    const { formUser } = this.props;
     this.setState({
       formUser
     });
   }
-
+  
   _handleSignInUser = () => {
     const { formUser } = this.state;
     const { signInUser } = this.props;
     signInUser(formUser);
   };
-
+  
   _isSignInButtonEnabled = () => {
     const { email, senha } = this.state.formUser;
-
+    
     const exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+    
     let isEmailValid = email !== null && exp.test(String(email).toLowerCase());
     let isSenhaValid = senha !== null && String(senha).length > 0;
     return isEmailValid && isSenhaValid;
   };
-
+  
   render() {
+    
+    const { isLoading } = this.props;
+  
     return (
       <View style={{ flex: 1 }}>
         <LinearGradient
@@ -111,6 +121,7 @@ class Home extends React.Component {
                 rounded
                 large
                 elevated
+                isLoading={isLoading}
                 disabled={!this._isSignInButtonEnabled()}
                 variant="light"
                 onPress={() => this._handleSignInUser()}
@@ -153,7 +164,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   formUser: state.auth.formUser,
-  hasError: state.auth.hasError
+  hasError: state.auth.hasError,
+  isLoading: state.auth.isLoading,
 });
 
 const mapDispatchToProps = dispatch => ({

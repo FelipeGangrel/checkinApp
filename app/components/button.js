@@ -3,14 +3,15 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-
+import { FontAwesome } from "@expo/vector-icons";
 import { Button, Text } from "native-base";
 import { colors } from "../colors";
+import Spinning from "./spinning";
 
 export default class MyButton extends React.Component {
 
   render() {
-    let { onPress, variant, title, block, rounded, large, elevated, disabled } = this.props;
+    let { onPress, variant, title, block, rounded, large, elevated, disabled, isLoading } = this.props;
 
     function setTextColor(variant = "primary") {
       return colors[variant].dark ? colors.light.base : colors.dark.base;
@@ -41,6 +42,12 @@ export default class MyButton extends React.Component {
       text,
     }
 
+    const Content = isLoading 
+      ? <Spinning>
+          <FontAwesome name="spinner" size={35} />
+        </Spinning>
+      : <Text style={styles.text}>{title}</Text>
+
     return (
       <View style={{flex: 0, marginVertical: 20 }}>
         <Button 
@@ -51,8 +58,7 @@ export default class MyButton extends React.Component {
           large={large} 
           disabled={disabled} 
           style={[styles.button, { backgroundColor: disabled ? `${backgroundColor}FF` : backgroundColor }] }>
-
-          <Text style={styles.text}>{title}</Text>
+          {Content}
         </Button>
       </View>
     )

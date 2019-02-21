@@ -21,26 +21,17 @@ class Home extends React.Component {
     headerRight: navigation.getParam("headerRight")
   });
 
+
   constructor(props) {
     super(props);
-    this.state = {
-      qrReaderOpen: false
-    };
   }
 
   componentDidMount() {
 
-    const { isLoading } = this.props;
-
     this.props.navigation.setParams({
       headerRight: (
         <TouchableOpacity onPress={this._handleRefreshButton}>
-          <EvilIcons
-            name="refresh"
-            size={35}
-            color={ isLoading ? "red" : "black" }
-            style={{ marginHorizontal: 15 }}
-          />
+          <EvilIcons name="refresh" size={35} style={{ marginHorizontal: 15 }} />
         </TouchableOpacity>
       )
     });
@@ -48,7 +39,9 @@ class Home extends React.Component {
 
   _handleRefreshButton = () => {
     const { fetchListaFromStart, isLoading } = this.props;
-    if (!isLoading) fetchListaFromStart();
+    if (!isLoading) {
+      fetchListaFromStart();
+    };
   };
 
   _onOpenCredenciado = credenciado => {
