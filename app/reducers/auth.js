@@ -134,8 +134,6 @@ const signInUser = user => {
 
     const postUrl = `${API_URL}Api/Controller/Comprador/login.php`;
 
-    console.log(postUrl);
-
     let formData = new FormData();
 
     formData.append("functionPage", "LoginPage");

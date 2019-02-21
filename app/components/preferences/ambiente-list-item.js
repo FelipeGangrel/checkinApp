@@ -15,7 +15,6 @@ class AmbienteListItem extends React.Component {
 
   _eventSelected = activeAmbiente => {
     const { switchActiveAmbiente } = this.props;
-    console.log('ambiente ativo:', activeAmbiente);
     switchActiveAmbiente(activeAmbiente);
   }
 
@@ -46,7 +45,6 @@ class AmbienteListItem extends React.Component {
   render() {
 
     const { activeAmbiente } = this.props;
-    console.log(activeAmbiente);
 
     const nome = activeAmbiente != null ? activeAmbiente.descricao : "Todos";
     const ellipsis = nome.length > 23 ? "..." : "";

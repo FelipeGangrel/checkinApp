@@ -15,7 +15,6 @@ class EventoListItem extends React.Component {
 
   _eventSelected = activeEvent => {
     const { switchActiveEvent } = this.props;
-    console.log(activeEvent);
     switchActiveEvent(activeEvent);
   }
 
