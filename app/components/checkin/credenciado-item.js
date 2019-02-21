@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import { colors } from "../../colors";
 import Swipeable from "react-native-swipeable";
@@ -64,6 +64,9 @@ export default class CredenciadoItem extends React.PureComponent {
         )}
       </View>
     );
+    
+    const title = <Text numberOfLines={1}>{credenciado.nome}</Text>;
+    const subtitle = <Text numberOfLines={1}>{credenciado.email}</Text>
 
     return (
       <Swipeable
@@ -80,8 +83,9 @@ export default class CredenciadoItem extends React.PureComponent {
         <ListItem
           roundAvatar
           leftAvatar={{ source: { uri: credenciado.avatar.thumbnail }}}
-          title={credenciado.nome}
-          subtitle={credenciado.email}
+          title={title}
+          subtitle={subtitle}
+          
           rightIcon={checkIcon}
           containerStyle={{ marginVertical: 0, borderBottomColor: "#e5e5e5" }}
           onPress={ this._handleOnPress }
