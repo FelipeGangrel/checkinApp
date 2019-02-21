@@ -15,6 +15,7 @@ import { colors } from "../../colors";
 import DrawerButton from "../../components/drawer-button";
 import { eventosActions } from "../../reducers/eventos";
 import EventoListItem from "../../components/preferences/evento-list-item";
+import AmbienteListItem from "../../components/preferences/ambiente-list-item";
 
 @connectActionSheet
 class Home extends React.Component {
@@ -47,6 +48,7 @@ class Home extends React.Component {
         <View style={styles.container}>
           <ScrollView>
             <EventoListItem />
+            <AmbienteListItem />
           </ScrollView>
         </View>
       </SafeAreaView>

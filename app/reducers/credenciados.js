@@ -159,6 +159,8 @@ const _setFilter = filter => ({
   filter
 });
 
+
+
 // métodos expostos
 
 const fetchListaFromStart = () => {

@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
   events: [],
-  activeEvent: null
+  activeEvent: null,
+  activeAmbiente: null,
 };
 
 const EVENTS_SWITCH_ACTIVE_EVENT = "EVENTS_SWITCH_ACTIVE_EVENT";
@@ -53,6 +54,7 @@ const _switchActiveEvent = activeEvent => ({
 // métodos expostos
 
 const switchActiveEvent = activeEvent => {
+  
   return function (dispatch) {
     dispatch(_userHasActiveEvent(true));
     dispatch(_switchActiveEvent(activeEvent));

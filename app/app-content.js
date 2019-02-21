@@ -24,21 +24,21 @@ class AppContent extends React.Component {
 
   render() {
     
-    const { auth } = this.props;
-    const isSignedIn = auth.isSignedIn;
-    const hasActiveEvent = auth.hasActiveEvent;
-
+    const { isSignedIn, hasActiveEvent } = this.props;
     const Layout = createRootNavigator(isSignedIn, hasActiveEvent);
 
     return (
-      <Layout ref={navigatorRef => { navigationService.setTopLevelNavigator(navigatorRef) }} />
+      <Layout ref={navigatorRef => { 
+        navigationService.setTopLevelNavigator(navigatorRef)
+      }} />
     )
   }
 
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  isSignedIn: state.auth.isSignedIn,
+  hasActiveEvent: state.auth.hasActiveEvent,
 });
 
 const mapDispatchToProps = dispatch => ({

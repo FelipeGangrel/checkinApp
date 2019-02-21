@@ -7,8 +7,7 @@ import DrawerContent from "./drawer-content";
 import Tabs from "./tabs";
 import Preferences from "../../screens/preferences";
 
-
-export default createDrawerNavigator({
+const drawerNavigator = createDrawerNavigator({
   Tabs: {
     screen: Tabs,
     navigationOptions: {
@@ -33,8 +32,15 @@ export default createDrawerNavigator({
     }
   }
 },{
-  contentComponent: (props) => <DrawerContent { ... props } />,
+  contentComponent: (props) => {
+    return (
+      <DrawerContent { ... props } />
+    )
+  },
+  initialRouteName: "Tabs",
   contentOptions: {
-    activeTintColor: colors.primary.base
+    activeTintColor: colors.primary.base,
   }
 });
+
+export default drawerNavigator;

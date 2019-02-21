@@ -10,8 +10,11 @@ export default class Home extends React.Component {
     headerLeft: <DrawerButton navigation={navigation} />
   });
 
+  constructor(props) {
+    super(props);
+  }
+  
   render() {
-
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.mainRow}>

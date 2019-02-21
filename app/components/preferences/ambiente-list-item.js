@@ -7,7 +7,7 @@ import { eventosActions } from "../../reducers/eventos";
 import styles from "./styles";
 
 @connectActionSheet
-class EventoListItem extends React.Component {
+class AmbienteListItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -66,5 +66,5 @@ const mapDispatchToProps = dispatch => ({
   switchActiveEvent: event => dispatch(eventosActions.switchActiveEvent(event)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventoListItem);
+export default connect(mapStateToProps, mapDispatchToProps)(AmbienteListItem);
 
