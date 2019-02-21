@@ -13,17 +13,20 @@ class AmbienteListItem extends React.Component {
     super(props);
   }
 
-  _eventSelected = activeEvent => {
-    const { switchActiveEvent } = this.props;
-    switchActiveEvent(activeEvent);
+  _eventSelected = activeAmbiente => {
+    const { switchActiveAmbiente } = this.props;
+    console.log('ambiente ativo:', activeAmbiente);
+    switchActiveAmbiente(activeAmbiente);
   }
 
   _handleOnPress = () => {
-    const { events } = this.props;
-    const eventNames = events.map(event => event.nome);
-    const options = [...eventNames, ...["Cancelar"]];
+    const { activeEvent } = this.props;
+    const ambientesNames = activeEvent.ambientes.map(ambiente => ambiente.descricao);
+    const options = [...["Todos"], ...ambientesNames, ...["Cancelar"]];
+
 
     const cancelButtonIndex = options.length - 1;
+    const TodosButtonIndex = 0;
     this.props.showActionSheetWithOptions(
       {
         options,
@@ -31,7 +34,10 @@ class AmbienteListItem extends React.Component {
       },
       buttonIndex => {
         if (buttonIndex !== cancelButtonIndex) {
-          this._eventSelected(events[buttonIndex]);
+          const activeAmbiente = buttonIndex != TodosButtonIndex
+            ? activeEvent.ambientes[buttonIndex - 1]
+            : null;
+          this._eventSelected(activeAmbiente);
         }
       }
     );
@@ -39,16 +45,18 @@ class AmbienteListItem extends React.Component {
 
   render() {
 
-    const { activeEvent } = this.props;
+    const { activeAmbiente } = this.props;
+    console.log(activeAmbiente);
 
-    const ellipsis = activeEvent.nome.length > 18 ? "..." : "";
-    const eventNome = `${activeEvent.nome.substring(0, 15)}${ellipsis}`;
+    const nome = activeAmbiente != null ? activeAmbiente.descricao : "Todos";
+    const ellipsis = nome.length > 23 ? "..." : "";
+    const ambienteNome = `${nome.substring(0, 20)}${ellipsis}`;
 
     return (
       <View style={styles.listItem}>
-        <Text>Evento</Text>
+        <Text>Ambiente</Text>
         <TouchableOpacity style={styles.option} onPress={this._handleOnPress}>
-          <Text style={styles.optionText}>{eventNome}</Text>
+          <Text style={styles.optionText}>{ambienteNome}</Text>
           <EvilIcons name="chevron-right" size={styles.iconSize} color={styles.iconColor} />
         </TouchableOpacity>
       </View>
@@ -58,12 +66,12 @@ class AmbienteListItem extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  events: state.eventos.events,
   activeEvent: state.eventos.activeEvent,
+  activeAmbiente: state.eventos.activeAmbiente,
 });
 
 const mapDispatchToProps = dispatch => ({
-  switchActiveEvent: event => dispatch(eventosActions.switchActiveEvent(event)),
+  switchActiveAmbiente: ambiente => dispatch(eventosActions.switchActiveAmbiente(ambiente)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AmbienteListItem);

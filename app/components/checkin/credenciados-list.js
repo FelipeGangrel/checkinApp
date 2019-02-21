@@ -25,8 +25,11 @@ class CredenciadosList extends React.Component {
 
   // realizar fetch no servidor
   _fetchLista = () => {
-    const { fetchLista } = this.props;
-    fetchLista();
+    const { fetchLista, credenciados } = this.props;
+    // só fazer fetch se houverem mais resultados à frente
+    if (credenciados.next) {
+      fetchLista();
+    }
   };
 
   // atualiza o status do credenciado em nossa store

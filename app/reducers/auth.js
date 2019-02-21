@@ -160,7 +160,8 @@ const signInUser = user => {
 
         const events = list_sf_pessoa_eventos.map(event => ({
           id: event.id_evento.id,
-          nome: event.id_evento.nome_evento
+          nome: event.id_evento.nome_evento,
+          ambientes: event.ambientes,
         }));
 
         // se o usuário puder gerenciar apenas um evento, defini-lo de uma vez como ativo

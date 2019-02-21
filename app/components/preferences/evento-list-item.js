@@ -15,6 +15,7 @@ class EventoListItem extends React.Component {
 
   _eventSelected = activeEvent => {
     const { switchActiveEvent } = this.props;
+    console.log(activeEvent);
     switchActiveEvent(activeEvent);
   }
 
@@ -41,8 +42,8 @@ class EventoListItem extends React.Component {
 
     const { activeEvent } = this.props;
 
-    const ellipsis = activeEvent.nome.length > 18 ? "..." : "";
-    const eventNome = `${activeEvent.nome.substring(0, 15)}${ellipsis}`;
+    const ellipsis = activeEvent.nome.length > 23 ? "..." : "";
+    const eventNome = `${activeEvent.nome.substring(0, 20)}${ellipsis}`;
 
     return (
       <View style={styles.listItem}>

@@ -5,6 +5,7 @@ const INITIAL_STATE = {
 };
 
 const EVENTS_SWITCH_ACTIVE_EVENT = "EVENTS_SWITCH_ACTIVE_EVENT";
+const EVENTS_SWITCH_ACTIVE_AMBIENTE = "EVENTS_SWITCH_ACTIVE_AMBIENTE";
 const EVENTS_UPDATE_LIST = "EVENTS_UPDATE_LIST";
 const EVENTS_RESET = "EVENTS_RESET";
 
@@ -12,6 +13,8 @@ export const eventosReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case EVENTS_SWITCH_ACTIVE_EVENT:
       return _actionEventsSwitchActiveEvent(state, action);
+    case EVENTS_SWITCH_ACTIVE_AMBIENTE:
+      return _actionEventsSwitchActiveAmbiente(state, action);
     case EVENTS_UPDATE_LIST:
       return _actionEventsUpdateList(state, action);
     case EVENTS_RESET:
@@ -26,9 +29,17 @@ export const eventosReducer = (state = INITIAL_STATE, action) => {
 const _actionEventsSwitchActiveEvent = (state, action) => {
   const { activeEvent } = action;
   return Object.assign({}, state, {
-    activeEvent
+    activeEvent,
+    activeAmbiente: null,
   });
 };
+
+const _actionEventsSwitchActiveAmbiente = (state, action) => {
+  const { activeAmbiente } = action;
+  return Object.assign({}, state, {
+    activeAmbiente,
+  });
+}
 
 const _actionEventsUpdateList = (state, action) => {
   const { events } = action;
@@ -54,7 +65,6 @@ const _switchActiveEvent = activeEvent => ({
 // métodos expostos
 
 const switchActiveEvent = activeEvent => {
-  
   return function (dispatch) {
     dispatch(_userHasActiveEvent(true));
     dispatch(_switchActiveEvent(activeEvent));
@@ -66,12 +76,18 @@ const updateList = events => ({
   events
 });
 
+const switchActiveAmbiente = activeAmbiente => ({
+  type: EVENTS_SWITCH_ACTIVE_AMBIENTE,
+  activeAmbiente,
+});
+
 const reset = () => ({
   type: EVENTS_RESET,
 });
 
 export const eventosActions = {
   switchActiveEvent,
+  switchActiveAmbiente,
   updateList,
   reset,
 };

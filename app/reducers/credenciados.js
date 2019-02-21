@@ -18,20 +18,27 @@ const CREDENCIADOS_REQUEST_SUCCESS = "CREDENCIADOS_REQUEST_SUCCESS";
 const CREDENCIADOS_REQUEST_FAIL = "CREDENCIADOS_REQUEST_FAIL";
 const CREDENCIADO_UPDATE = "CREDENCIADO_UPDATE";
 const CREDENCIADOS_FILTER_CHANGE = "CREDENCIADOS_FILTER_CHANGE";
+const CREDENCIADOS_LISTA_RESET = "CREDENCIADOS_LISTA_RESET";
+const CREDENCIADOS_UPDATE_PAGINATOR = "CREDENCIADOS_UPDATE_PAGINATOR";
 const CREDENCIADOS_RESET = "CREDENCIADOS_RESET";
+
 
 export const credenciadosReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case CREDENCIADOS_REQUEST_START:
-      return _requestStart(state);
+      return _actionRequestStart(state);
     case CREDENCIADOS_REQUEST_SUCCESS:
-      return _requestSuccess(state, action);
+      return _actionRequestSuccess(state, action);
     case CREDENCIADOS_REQUEST_FAIL:
-      return _requestFail(state);
+      return _actionRequestFail(state);
     case CREDENCIADOS_FILTER_CHANGE:
-      return _filterChange(state, action);
+      return _actionFilterChange(state, action);
     case CREDENCIADO_UPDATE:
-      return _credenciadoUpdate(state, action);
+      return _actionCredenciadoUpdate(state, action);
+    case CREDENCIADOS_UPDATE_PAGINATOR:
+      return _actionUpdatePaginator(state, action);
+    case CREDENCIADOS_LISTA_RESET:
+      return _actionCredenciadosListaReset(state);
     case CREDENCIADOS_RESET:
       return Object.assign({}, state, INITIAL_STATE);
     default:
@@ -40,7 +47,7 @@ export const credenciadosReducer = (state = INITIAL_STATE, action) => {
 };
 
 // métodos a serem usados dentro do reducer
-const _requestStart = state => {
+const _actionRequestStart = state => {
   return Object.assign({}, state, {
     page: state.page + 1,
     isLoading: true,
@@ -48,7 +55,7 @@ const _requestStart = state => {
   });
 };
 
-const _requestSuccess = (state, action) => {
+const _actionRequestSuccess = (state, action) => {
   const { lista } = action;
 
   const listaToAppend = lista.filter(newItem => {
@@ -78,21 +85,21 @@ const _requestSuccess = (state, action) => {
   });
 };
 
-const _requestFail = state => {
+const _actionRequestFail = state => {
   return Object.assign({}, state, {
     isLoading: false,
     hasError: true
   });
 };
 
-const _filterChange = (state, action) => {
+const _actionFilterChange = (state, action) => {
   const { filter } = action;
   return Object.assign({}, state, {
     filter
   });
 };
 
-const _credenciadoUpdate = (state, action) => {
+const _actionCredenciadoUpdate = (state, action) => {
   const { credenciado } = action;
 
   const index = state.lista.findIndex(item => item.id === credenciado.id);
@@ -104,6 +111,25 @@ const _credenciadoUpdate = (state, action) => {
 
   return Object.assign({}, state, {
     lista: newLista
+  });
+};
+
+const _actionUpdatePaginator = (state, action) => {
+  const { prev, next, totalPages } = action.paginator;
+  return Object.assign({}, state, {
+    prev,
+    next,
+    totalPages,
+  });
+}
+
+const _actionCredenciadosListaReset = state => {
+  return Object.assign({}, state,  {
+    lista: [],
+    page: 0,
+    prev: false,
+    next: false,
+    hasError: false,
   });
 };
 
@@ -144,7 +170,7 @@ const _storeLista = data => {
 };
 
 const _resetlista = () => ({
-  type: CREDENCIADOS_RESET
+  type: CREDENCIADOS_LISTA_RESET
 });
 
 const _handleError = error => {
@@ -157,6 +183,11 @@ const _handleError = error => {
 const _setFilter = filter => ({
   type: CREDENCIADOS_FILTER_CHANGE,
   filter
+});
+
+const _updatePaginator = paginator => ({
+  type: CREDENCIADOS_UPDATE_PAGINATOR,
+  paginator,
 });
 
 
@@ -180,19 +211,25 @@ const fetchLista = () => {
       dispatch(_requestLista());
 
       const perPage = 10;
+      const filter = getState().credenciados.filter;
       const page = getState().credenciados.page;
       const evento = getState().eventos.activeEvent.id;
-      // const fetchUrl = `https://randomuser.me/api/?seed=2&page=${page}&results=${perPage}`;
-      const fetchUrl = 
-      `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=Listar&page=${page}&evento=${evento}`;
+      const ambiente = getState().eventos.activeAmbiente != null 
+        ? getState().eventos.activeAmbiente.id
+        : null;
 
-      console.log(fetchUrl);
+      // const fetchUrl = `https://randomuser.me/api/?seed=2&page=${page}&results=${perPage}`;
+
+      let fetchUrl = `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=Listar&page=${page}&evento=${evento}`;
+      if (ambiente) fetchUrl += `&ambiente=${ambiente}`;
+      if (filter != "") fetchUrl += `&search=${filter}`;
 
       axios
         .get(fetchUrl)
         .then(response => {
-          console.log(response);
           if (response.data.success) {
+            const { prev, next, totalPages  } = response.data; 
+            dispatch(_updatePaginator({ prev, next, totalPages }));
             dispatch(_storeLista(response.data.data))
           }
         })
