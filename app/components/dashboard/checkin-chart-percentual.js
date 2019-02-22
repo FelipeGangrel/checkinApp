@@ -6,11 +6,10 @@ import { colors } from "../../colors";
 export default class CheckinChartPercentual extends React.PureComponent {
 
   render() {
-
-    let progress = 0.7;
+    
+    const progress = this.props.percentual | 0;
 
     return (
-
       <View>
         <ProgressCircle 
           style={{ height: 300 }}
@@ -29,8 +28,6 @@ export default class CheckinChartPercentual extends React.PureComponent {
         
       </View>
 
-
-     
     )
     
   } 

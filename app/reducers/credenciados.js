@@ -10,7 +10,9 @@ const INITIAL_STATE = {
   totalPages: 0,
   filter: "",
   isLoading: false,
-  hasError: false
+  hasError: false,
+  credenciadosTotal: 0,
+  credenciadosPresentes: 0,
 };
 
 const CREDENCIADOS_REQUEST_START = "CREDENCIADOS_REQUEST_START";
@@ -115,11 +117,13 @@ const _actionCredenciadoUpdate = (state, action) => {
 };
 
 const _actionUpdatePaginator = (state, action) => {
-  const { prev, next, totalPages } = action.paginator;
+  const { prev, next, totalPages, credenciadosTotal, credenciadosPresentes } = action.paginator;
   return Object.assign({}, state, {
     prev,
     next,
     totalPages,
+    credenciadosTotal,
+    credenciadosPresentes,
   });
 }
 
@@ -128,8 +132,11 @@ const _actionCredenciadosListaReset = state => {
     lista: [],
     page: 0,
     prev: false,
-    next: false,
+    next: true,
     hasError: false,
+    totalPages: 0,
+    credenciadosTotal: 0,
+    credenciadosPresentes: 0,
   });
 };
 
@@ -224,19 +231,18 @@ const fetchLista = () => {
       if (ambiente) fetchUrl += `&ambiente=${ambiente}`;
       if (filter != "") fetchUrl += `&search=${filter}`;
 
+      console.log(fetchUrl);
+
       axios
         .get(fetchUrl)
         .then(response => {
           if (response.data.success) {
-            const { prev, next, totalPages  } = response.data; 
-            dispatch(_updatePaginator({ prev, next, totalPages }));
+            const { prev, next, totalPages, credenciadosTotal, credenciadosPresentes  } = response.data; 
+            dispatch(_updatePaginator({ prev, next, totalPages, credenciadosTotal, credenciadosPresentes }));
             dispatch(_storeLista(response.data.data))
           }
         })
         .catch(error => dispatch(_handleError(error)));
-
-    
-
     }
   };
 };

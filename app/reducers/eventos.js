@@ -1,3 +1,5 @@
+import { credenciadosActions } from "./credenciados";
+ 
 const INITIAL_STATE = {
   events: [],
   activeEvent: null,
@@ -55,11 +57,23 @@ const _userHasActiveEvent = hasActiveEvent => ({
   hasActiveEvent,
 });
 
+// credenciados
+const _credenciadosFetchListaFromStart = () => {
+  return function (dispatch) {
+    dispatch(credenciadosActions.fetchListaFromStart());
+  }
+};
+
 // métodos auxiliares
 
 const _switchActiveEvent = activeEvent => ({
   type: EVENTS_SWITCH_ACTIVE_EVENT,
   activeEvent
+});
+
+const _switchActiveAmbiente = activeAmbiente => ({
+  type: EVENTS_SWITCH_ACTIVE_AMBIENTE,
+  activeAmbiente,
 });
 
 // métodos expostos
@@ -68,6 +82,7 @@ const switchActiveEvent = activeEvent => {
   return function (dispatch) {
     dispatch(_userHasActiveEvent(true));
     dispatch(_switchActiveEvent(activeEvent));
+    dispatch(_credenciadosFetchListaFromStart());
   }
 };
 
@@ -76,10 +91,12 @@ const updateList = events => ({
   events
 });
 
-const switchActiveAmbiente = activeAmbiente => ({
-  type: EVENTS_SWITCH_ACTIVE_AMBIENTE,
-  activeAmbiente,
-});
+const switchActiveAmbiente = activeAmbiente => {
+  return function (dispatch) {
+    dispatch(_switchActiveAmbiente(activeAmbiente));
+    dispatch(_credenciadosFetchListaFromStart());
+  }
+};
 
 const reset = () => ({
   type: EVENTS_RESET,

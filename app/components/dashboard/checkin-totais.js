@@ -6,18 +6,18 @@ import { colors } from "../../colors";
 export default class CheckinTotais extends React.Component {
 
   render() {
-    let total = 1000;
-    let presentes = 700;
+
+    const { total, presentes } = this.props;
 
     return (
       <View style={{ width: "100%", justifyContent: "space-evenly", alignItems: "center", flexDirection: "row" }}>
         <View style={{ alignItems: "center" }}>
-          <Text style={ styles.textTitle }>700</Text>
+          <Text style={ styles.textTitle }>{presentes}</Text>
           <Text style={ styles.textSubtitle }>Presentes</Text>
         </View>
         <MaterialIcons name="group" size={ 35 } color={ colors.light.alternative } /> 
         <View style={{ alignItems: "center" }}>
-          <Text style={ styles.textTitle }>1000</Text>
+          <Text style={ styles.textTitle }>{total}</Text>
           <Text style={ styles.textSubtitle }>Credenciados</Text>
         </View>
       </View>
