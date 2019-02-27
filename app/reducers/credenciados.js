@@ -211,13 +211,10 @@ const fetchListaFromStart = () => {
 const fetchLista = () => {
   return function(dispatch, getState) {
     const isLoading = getState().credenciados.isLoading;
-
-
     if (!isLoading) {
       // setando isLoading = true
       dispatch(_requestLista());
 
-      const perPage = 10;
       const filter = getState().credenciados.filter;
       const page = getState().credenciados.page;
       const evento = getState().eventos.activeEvent.id;
@@ -230,8 +227,6 @@ const fetchLista = () => {
       let fetchUrl = `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=Listar&page=${page}&evento=${evento}`;
       if (ambiente) fetchUrl += `&ambiente=${ambiente}`;
       if (filter != "") fetchUrl += `&search=${filter}`;
-
-      console.log(fetchUrl);
 
       axios
         .get(fetchUrl)
