@@ -14,16 +14,12 @@ export default class CredenciadoItem extends React.PureComponent {
     };
   }
 
-  _navigateToCredenciado = () => {
-   const { navigation } = this.props;
-  }
-
   // este método se comunica com o componente pai
   _handleOnLeftSwipeComplete = () => {
-    const { id, presente } = this.props.credenciado;
-    // this.setState({ presente: !presente });
+    const { id, presente, eticket } = this.props.credenciado;
     this.props.onCredenciadoUpdate({
       id,
+      eticket,
       presente: !presente,
     });
   };
@@ -93,6 +89,7 @@ export default class CredenciadoItem extends React.PureComponent {
       </Swipeable>
     );
   }
+
 }
 
 const styles = StyleSheet.create({

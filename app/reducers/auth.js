@@ -27,17 +27,17 @@ const AUTH_RESET = "AUTH_RESET";
 export const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LOGIN_REQUEST_START:
-      return _loginRequestStart(state);
+      return _actionLoginRequestStart(state);
     case LOGIN_REQUEST_SUCCESS:
-      return _loginRequestSuccess(state, action);
+      return _actionLoginRequestSuccess(state, action);
     case LOGIN_REQUEST_FAIL:
-      return _loginRequestFail(state);
+      return _actionLoginRequestFail(state);
     case USER_HAS_ACTIVE_EVENT:
-      return _userHasActiveEvent(state, action);
+      return _actionUserHasActiveEvent(state, action);
     case LOGIN_CLEAR_ERROR:
-      return _loginClearError(state);
+      return _actionLoginClearError(state);
     case USER_UPDATE_FORMUSER:
-      return _userUpdateFormUser(state, action);
+      return _actionUserUpdateFormUser(state, action);
     case AUTH_RESET:
       return Object.assign({}, state, INITIAL_STATE);
     default:
@@ -47,14 +47,14 @@ export const authReducer = (state = INITIAL_STATE, action) => {
 
 // métodos auxiliares para o reducer
 
-const _loginRequestStart = state => {
+const _actionLoginRequestStart = state => {
   return Object.assign({}, state, {
     isLoading: true,
     hasError: false
   });
 };
 
-const _loginRequestSuccess = (state, action) => {
+const _actionLoginRequestSuccess = (state, action) => {
   const { user } = action;
   return Object.assign({}, state, {
     user,
@@ -64,27 +64,27 @@ const _loginRequestSuccess = (state, action) => {
   });
 };
 
-const _loginRequestFail = state => {
+const _actionLoginRequestFail = state => {
   return Object.assign({}, state, {
     isLoading: false,
     hasError: true
   });
 };
 
-const _userHasActiveEvent = (state, action) => {
+const _actionUserHasActiveEvent = (state, action) => {
   const { hasActiveEvent } = action;
   return Object.assign({}, state, {
     hasActiveEvent
   });
 };
 
-const _loginClearError = state => {
+const _actionLoginClearError = state => {
   return Object.assign({}, state, {
     hasError: false
   });
 };
 
-const _userUpdateFormUser = (state, action) => {
+const _actionUserUpdateFormUser = (state, action) => {
   const { formUser } = action;
   return Object.assign({}, state, {
     formUser,

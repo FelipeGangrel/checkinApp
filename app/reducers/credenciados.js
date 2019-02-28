@@ -181,6 +181,9 @@ const _resetlista = () => ({
 });
 
 const _handleError = error => {
+
+  console.log(error);
+
   return {
     type: CREDENCIADOS_REQUEST_FAIL,
     error
@@ -197,6 +200,10 @@ const _updatePaginator = paginator => ({
   paginator,
 });
 
+const _updateCredenciado = credenciado =>({
+  type: CREDENCIADO_UPDATE,
+  credenciado,
+});
 
 
 // métodos expostos
@@ -251,10 +258,54 @@ const filterLista = filter => {
 };
 
 const updateCredenciado = credenciado => {
-  return {
-    type: CREDENCIADO_UPDATE,
-    credenciado
-  };
+
+  return function (dispatch, getState) {
+
+    const activeAmbiente = getState().eventos.activeAmbiente;
+    
+    const usuarioId = getState().auth.user.id;
+    const eventoId = getState().eventos.activeEvent.id;
+    const ambienteId = activeAmbiente != null ? activeAmbiente.id : null;
+    
+    console.log('usuarioId', usuarioId);
+    console.log('eventoId', eventoId);
+    console.log('ambienteId', ambienteId);
+
+    const postUrl = `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=Presenca`;
+    const formData = new FormData();
+    formData.append('usuario', usuarioId);
+    formData.append('evento', eventoId);
+    formData.append('eticket', credenciado.eticket);
+    formData.append('presente', credenciado.presente ? 1 : 0);
+    if (ambienteId != null) formData.append('ambiente', ambienteId);
+
+    axios
+      .post(postUrl, formData)
+      .then(response => {
+        if (response.data.success) {
+          const c = response.data.data[0];
+          const credenciado = {
+            id: c.id,
+            nome: c.nome,
+            email: c.email,
+            sexo: c.sexo,
+            empresa: c.empresa,
+            ingresso: c.ingresso,
+            necessidadesEspeciais: c.necessidades_especiais,
+            presente: c.presente,
+            eticket: c.eticket,
+            avatar: {
+              thumbnail: c.thumbnail
+            },
+          };
+          dispatch(_updateCredenciado(credenciado));
+        }
+      })
+      .catch(error => dispatch(_handleError(error)));
+
+  }
+
+
 };
 
 const reset = () => ({
