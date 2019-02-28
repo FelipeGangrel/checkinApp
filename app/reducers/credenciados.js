@@ -22,6 +22,7 @@ const CREDENCIADO_UPDATE = "CREDENCIADO_UPDATE";
 const CREDENCIADOS_FILTER_CHANGE = "CREDENCIADOS_FILTER_CHANGE";
 const CREDENCIADOS_LISTA_RESET = "CREDENCIADOS_LISTA_RESET";
 const CREDENCIADOS_UPDATE_PAGINATOR = "CREDENCIADOS_UPDATE_PAGINATOR";
+const CREDENCIADOS_UPDATE_RESUMO_TOTAIS = "CREDENCIADOS_UPDATE_RESUMO_TOTAIS";
 const CREDENCIADOS_RESET = "CREDENCIADOS_RESET";
 
 
@@ -36,9 +37,11 @@ export const credenciadosReducer = (state = INITIAL_STATE, action) => {
     case CREDENCIADOS_FILTER_CHANGE:
       return _actionFilterChange(state, action);
     case CREDENCIADO_UPDATE:
-      return _actionCredenciadoUpdate(state, action);
+      return _actionUpdateCredenciado(state, action);
     case CREDENCIADOS_UPDATE_PAGINATOR:
       return _actionUpdatePaginator(state, action);
+    case CREDENCIADOS_UPDATE_RESUMO_TOTAIS:
+      return _actionUpdateResumoTotais(state, action);
     case CREDENCIADOS_LISTA_RESET:
       return _actionCredenciadosListaReset(state);
     case CREDENCIADOS_RESET:
@@ -66,20 +69,6 @@ const _actionRequestSuccess = (state, action) => {
 
   const newLista = [...state.lista, ... listaToAppend];
 
-
-  const _sortCredenciados = (a, b) => {
-    const nomeA = a.nome.toLowerCase();
-    const nomeB = b.nome.toLowerCase();
-  
-    let comparison = 0;
-    if (nomeA > nomeB) comparison = 1;
-    else if (nomeA < nomeB) comparison = -1;
-    
-    return comparison;
-  };
-
-  // newLista.sort(_sortCredenciados);
-
   return Object.assign({}, state, {
     lista: newLista,
     isLoading: false,
@@ -101,7 +90,7 @@ const _actionFilterChange = (state, action) => {
   });
 };
 
-const _actionCredenciadoUpdate = (state, action) => {
+const _actionUpdateCredenciado = (state, action) => {
   const { credenciado } = action;
 
   const index = state.lista.findIndex(item => item.id === credenciado.id);
@@ -125,7 +114,15 @@ const _actionUpdatePaginator = (state, action) => {
     credenciadosTotal,
     credenciadosPresentes,
   });
-}
+};
+
+const _actionUpdateResumoTotais = (state, action) => {
+  const { credenciadosTotal, credenciadosPresentes } = action.resumo;
+  return Object.assign({}, state, {
+    credenciadosTotal,
+    credenciadosPresentes,
+  });
+};
 
 const _actionCredenciadosListaReset = state => {
   return Object.assign({}, state,  {
@@ -200,6 +197,11 @@ const _updatePaginator = paginator => ({
   paginator,
 });
 
+const _updateResumoTotais = resumo => ({
+  type: CREDENCIADOS_UPDATE_RESUMO_TOTAIS,
+  resumo,
+});
+
 const _updateCredenciado = credenciado =>({
   type: CREDENCIADO_UPDATE,
   credenciado,
@@ -240,7 +242,8 @@ const fetchLista = () => {
         .then(response => {
           if (response.data.success) {
             const { prev, next, totalPages, credenciadosTotal, credenciadosPresentes  } = response.data; 
-            dispatch(_updatePaginator({ prev, next, totalPages, credenciadosTotal, credenciadosPresentes }));
+            dispatch(_updatePaginator({ prev, next, totalPages }));
+            dispatch(_updateResumoTotais({ credenciadosTotal, credenciadosPresentes }));
             dispatch(_storeLista(response.data.data))
           }
         })
@@ -266,10 +269,6 @@ const updateCredenciado = credenciado => {
     const usuarioId = getState().auth.user.id;
     const eventoId = getState().eventos.activeEvent.id;
     const ambienteId = activeAmbiente != null ? activeAmbiente.id : null;
-    
-    console.log('usuarioId', usuarioId);
-    console.log('eventoId', eventoId);
-    console.log('ambienteId', ambienteId);
 
     const postUrl = `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=Presenca`;
     const formData = new FormData();
@@ -284,6 +283,7 @@ const updateCredenciado = credenciado => {
       .then(response => {
         if (response.data.success) {
           const c = response.data.data[0];
+          const { credenciadosTotal, credenciadosPresentes } = response.data;
           const credenciado = {
             id: c.id,
             nome: c.nome,
@@ -298,6 +298,7 @@ const updateCredenciado = credenciado => {
               thumbnail: c.thumbnail
             },
           };
+          dispatch(_updateResumoTotais({ credenciadosTotal, credenciadosPresentes }));
           dispatch(_updateCredenciado(credenciado));
         }
       })

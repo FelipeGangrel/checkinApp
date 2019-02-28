@@ -18,7 +18,7 @@ export default class CheckinTotais extends React.Component {
         <MaterialIcons name="group" size={ 35 } color={ colors.light.alternative } /> 
         <View style={{ alignItems: "center" }}>
           <Text style={ styles.textTitle }>{total}</Text>
-          <Text style={ styles.textSubtitle }>Credenciados</Text>
+          <Text style={ styles.textSubtitle }>Tickets</Text>
         </View>
       </View>
     )
