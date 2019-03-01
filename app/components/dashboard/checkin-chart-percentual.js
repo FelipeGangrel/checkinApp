@@ -7,7 +7,7 @@ export default class CheckinChartPercentual extends React.PureComponent {
 
   render() {
     
-    const progress = this.props.percentual;
+    const progress = Number(this.props.percentual);
     const progressText = Number(progress * 100).toFixed(1);
 
     return (

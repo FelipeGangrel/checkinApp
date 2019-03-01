@@ -18,9 +18,10 @@ class Home extends React.Component {
   render() {
 
     const { credenciadosPresentes, credenciadosTotal } = this.props;
-    console.log('credenciadosPresentes', credenciadosPresentes);
-    console.log('credenciadosTotal', credenciadosTotal);
-    const percentual = Number(credenciadosPresentes) / Number(credenciadosTotal);
+
+    let percentual = Number(credenciadosPresentes) / Number(credenciadosTotal);
+    if (isNaN(percentual)) percentual = 0;
+
     console.log('perentual', percentual);
 
     return (
