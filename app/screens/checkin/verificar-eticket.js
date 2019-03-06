@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, View, Text } from "react-native";
 import { colors } from "../../colors";
 import Button from "../../components/button";
 
-export default class QrCodeProcessing extends React.Component {
+export default class VerificarEticket extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {

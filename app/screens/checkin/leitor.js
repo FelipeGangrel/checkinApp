@@ -11,7 +11,7 @@ export default class Leitor extends React.Component {
   _onScanned = object => {
     const { navigation } = this.props;
     const { data } = object;
-    navigation.navigate('QrCodeProcessing', { eticket: data });
+    navigation.navigate('VerificarEticket', { eticket: data });
   }
 
   render() {
