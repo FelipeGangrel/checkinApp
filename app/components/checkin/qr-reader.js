@@ -19,6 +19,11 @@ export default class QrReader extends React.Component {
     this.setState({ hasCameraPermission: status === "granted" });
   }
 
+  // enviando evento para o componente pai em leitor.js
+  _handleBarCodeScanned = ({ type, data }) => {
+    this.props.onScanned({ data });
+  }
+
   render() {
 
     const { hasCameraPermission } = this.state;
@@ -51,10 +56,7 @@ export default class QrReader extends React.Component {
     return Layout;
   }
 
-  // enviando evento para o componente pai em leitor.js
-  _handleBarCodeScanned = ({ type, data }) => {
-    this.props.onScanned({ data });
-  }
+  
   
 }
 

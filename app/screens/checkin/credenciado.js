@@ -6,13 +6,12 @@ import {
   ScrollView,
   Text,
   Image,
-  Switch,
-  Platform
 } from "react-native";
-import { Avatar, Card } from "react-native-elements";
+import { Card } from "react-native-elements";
 import { connect } from "react-redux";
 import { colors } from "../../colors";
 import { credenciadosActions } from "../../reducers/credenciados";
+import Button from "../../components/button";
 
 class Credenciado extends React.PureComponent {
   static navigationOptions = ({ navigation }) => {
@@ -29,7 +28,10 @@ class Credenciado extends React.PureComponent {
     };
   }
 
-  _handlePresencaSwitch = presente => {
+  _handlePresencaSwitch = () => {
+    
+    const presente = !this.state.credenciado.presente;
+
     const { updateCredenciado } = this.props;
 
     const credenciado = Object.assign({}, this.state.credenciado, {
@@ -43,8 +45,15 @@ class Credenciado extends React.PureComponent {
     updateCredenciado(credenciado);
   };
 
+
   _renderCardMain = () => {
     const { credenciado } = this.state;
+
+    const buttonTitle = credenciado.presente
+      ? "CHECKOUT" : "CHECKIN";
+    
+    const colorVariant = credenciado.presente
+      ? "dark" : "success";
 
     return (
       <Card containerStyle={[styles.card, {marginTop: 50 }]}>
@@ -54,28 +63,37 @@ class Credenciado extends React.PureComponent {
             source={{ uri: credenciado.avatar.thumbnail }}
           />
           <View style={{ alignItems: "center", marginTop: 20 }}>
-            <Text style={styles.textHeder1}>{this.state.credenciado.nome}</Text>
+            <Text style={styles.textHeader1}>{this.state.credenciado.nome}</Text>
             <Text>{credenciado.email}</Text>
           </View>
+        </View>
+        <View style={{ flex: 0, marginTop: 10 }}>
+          <Button 
+            title={buttonTitle}
+            variant={colorVariant}
+            block
+            rounded
+            large
+            onPress={this._handlePresencaSwitch} />
         </View>
       </Card>
     );
   };
 
-  _renderCardPresente = () => {
+  _renderIngressoInfo = () => {
     const { credenciado } = this.state;
-
     return (
-      <Card containerStyle={styles.card}>
-        <View style={[styles.cardLinha, { justifyContent: "space-between" }]}>
-          <Text>Presente no evento</Text>
-          <Switch
-            onValueChange={this._handlePresencaSwitch}
-            value={credenciado.presente}
-          />
+      <Card containerStyle={[styles.card, { backgroundColor: colors.primary.base }]}>
+        <View style={[styles.cardLinha, {justifyContent: "space-between", marginBottom: 30}]}>
+          <Text style={[{ color: "white", }]}>Código do E-Ticket</Text>
+          <Text style={[styles.textHeader1, { color: "white", }]}>{credenciado.eticket}</Text>
+        </View>
+        <View style={[styles.cardLinha, {justifyContent: "space-between"}]}>
+          <Text style={[{ color: "white", }]}>Ingresso</Text>
+          <Text style={[styles.textHeader1, { color: "white", }]}>{credenciado.ingresso}</Text>
         </View>
       </Card>
-    );
+    )
   };
 
   _renderCardNecEspeciais = () => {
@@ -96,7 +114,7 @@ class Credenciado extends React.PureComponent {
         <View style={styles.heroView} />
           <ScrollView style={styles.scrollView}>
             {this._renderCardMain()}
-            {this._renderCardPresente()}
+            {this._renderIngressoInfo()}
             {this._renderCardNecEspeciais()}
           </ScrollView>
       </SafeAreaView>
@@ -105,7 +123,7 @@ class Credenciado extends React.PureComponent {
 }
 
 const styles = StyleSheet.create({
-  textHeder1: {
+  textHeader1: {
     fontSize: 18,
     fontWeight: "bold"
   },
@@ -131,7 +149,6 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   card: {
-    backgroundColor: "white",
     paddingHorizontal: 20,
     paddingVertical: 30,
     borderRadius: 10,
@@ -143,7 +160,7 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOpacity: 0.2,
     // == android
-    elevation: 7,
+    elevation: 3,
   },
   cardLinha: {
     flex: 1,

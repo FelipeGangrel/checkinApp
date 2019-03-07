@@ -9,6 +9,11 @@ export const colors = {
     alternative: "#266FA0",
     dark: true,
   },
+  success: {
+    base: "#2ecc71", 
+    alternative: "#27ae60",
+    dark: true,
+  },
   light: {
     base: "#ecf0f1",
     alternative: "#bdc3c7",
