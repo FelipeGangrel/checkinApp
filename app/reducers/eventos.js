@@ -64,6 +64,15 @@ const _credenciadosFetchListaFromStart = () => {
   }
 };
 
+const _credenciadosUpdateResumoTotais = () => {
+  return function (dispatch) {
+    dispatch(credenciadosActions.updateResumoTotais({ 
+      credenciadosTotal: 0,
+      credenciadosPresentes: 0,
+    }));
+  }
+}
+
 // métodos auxiliares
 
 const _switchActiveEvent = activeEvent => ({
@@ -80,6 +89,7 @@ const _switchActiveAmbiente = activeAmbiente => ({
 
 const switchActiveEvent = activeEvent => {
   return function (dispatch) {
+    // dispatch(_credenciadosUpdateResumoTotais()); 
     dispatch(_userHasActiveEvent(true));
     dispatch(_switchActiveEvent(activeEvent));
     dispatch(_credenciadosFetchListaFromStart());
@@ -93,6 +103,7 @@ const updateList = events => ({
 
 const switchActiveAmbiente = activeAmbiente => {
   return function (dispatch) {
+    // dispatch(_credenciadosUpdateResumoTotais());
     dispatch(_switchActiveAmbiente(activeAmbiente));
     dispatch(_credenciadosFetchListaFromStart());
   }

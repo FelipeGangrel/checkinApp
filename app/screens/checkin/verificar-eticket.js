@@ -31,7 +31,6 @@ class VerificarEticket extends React.Component {
     fetchUrl += `&eticket=${eticket}&evento=${activeEvent.id}`;
     if (activeAmbiente != null) fetchUrl += `&ambiente=${activeAmbiente.id}`;
 
-    console.log('fetchUrl', fetchUrl);
 
     axios
       .get(fetchUrl)
@@ -47,7 +46,6 @@ class VerificarEticket extends React.Component {
         console.log('ERRO AO OBTER ETICKET', error);
       });
 
-  
   };
 
   render() {

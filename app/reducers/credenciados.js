@@ -214,6 +214,13 @@ const fetchListaFromStart = () => {
   };
 };
 
+const updateResumoTotais = resumo => {
+  const { credenciadosTotal,  credenciadosPresentes} = resumo;
+  return function (dispatch) {
+    dispatch(_updateResumoTotais({ credenciadosTotal, credenciadosPresentes }));
+  }
+};
+
 const fetchLista = () => {
   return function(dispatch, getState) {
     const isLoading = getState().credenciados.isLoading;
@@ -298,6 +305,10 @@ const updateCredenciado = credenciado => {
           dispatch(_updateResumoTotais({ credenciadosTotal, credenciadosPresentes }));
           dispatch(_updateCredenciado(credenciado));
         }
+
+        if (response.data.error != null) {
+          alert(response.data.error);
+        }
       })
       .catch(error => dispatch(_handleError(error)));
 
@@ -315,5 +326,6 @@ export const credenciadosActions = {
   fetchListaFromStart,
   filterLista,
   updateCredenciado,
+  updateResumoTotais,
   reset,
 };

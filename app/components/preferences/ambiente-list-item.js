@@ -20,9 +20,9 @@ class AmbienteListItem extends React.Component {
 
   _handleOnPress = () => {
     const { activeEvent } = this.props;
+
     const ambientesNames = activeEvent.ambientes.map(ambiente => ambiente.descricao);
     const options = [...["Todos"], ...ambientesNames, ...["Cancelar"]];
-
 
     const cancelButtonIndex = options.length - 1;
     const TodosButtonIndex = 0;

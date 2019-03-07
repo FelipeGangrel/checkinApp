@@ -27,7 +27,6 @@ class Home extends React.Component {
     super(props);
   }
 
-
   componentDidUpdate() {
     const { hasError, clearError } = this.props;
     console.log('hasError', hasError);
