@@ -4,8 +4,8 @@ import API_URL from "./api-paths";
 const INITIAL_STATE = {
   user: {},
   formUser: {
-    email: "rodrigo@agenciaguppy.com.br",
-    senha: "rljr2010",
+    email: "",
+    senha: "",
   },
   isSignedIn: false,
   isLoading: false,
