@@ -178,9 +178,6 @@ const _resetlista = () => ({
 });
 
 const _handleError = error => {
-
-  console.log(error);
-
   return {
     type: CREDENCIADOS_REQUEST_FAIL,
     error

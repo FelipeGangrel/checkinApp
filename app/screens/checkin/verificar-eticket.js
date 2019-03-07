@@ -1,9 +1,12 @@
 import React from "react";
+import axios from "axios";
+import { connect } from "react-redux";
 import { StyleSheet, SafeAreaView, View, Text } from "react-native";
+import API_URL from "../../reducers/api-paths";
 import { colors } from "../../colors";
 import Button from "../../components/button";
 
-export default class VerificarEticket extends React.Component {
+class VerificarEticket extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -18,6 +21,34 @@ export default class VerificarEticket extends React.Component {
       eticket: this.props.navigation.getParam("eticket"),
     };
   }
+
+  _fetchTicketInfo = () => {
+    const { eticket } = this.state;
+    const { activeEvent, activeAmbiente } = this.props;
+    const { navigation } = this.props;
+
+    let fetchUrl = `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=CheckEticket`;
+    fetchUrl += `&eticket=${eticket}&evento=${activeEvent.id}`;
+    if (activeAmbiente != null) fetchUrl += `&ambiente=${activeAmbiente.id}`;
+
+    console.log('fetchUrl', fetchUrl);
+
+    axios
+      .get(fetchUrl)
+      .then(response => {
+        if (response.data.success) {
+          const credenciado = response.data.data[0];
+          navigation.navigate("Credenciado", { credenciado });
+        } else {
+          alert(response.data.msg);
+        }
+      })
+      .catch(error => {
+        console.log('ERRO AO OBTER ETICKET', error);
+      });
+
+  
+  };
 
   render() {
 
@@ -42,7 +73,8 @@ export default class VerificarEticket extends React.Component {
               block
               rounded
               large
-              elevated />
+              elevated
+              onPress={this._fetchTicketInfo} />
           </View>
 
 
@@ -78,3 +110,13 @@ const styles = StyleSheet.create({
     color: colors.primary.base,
   }
 });
+
+const mapStateToProps = state => ({
+  activeEvent: state.eventos.activeEvent,
+  activeAmbiente: state.eventos.activeAmbiente,
+});
+
+const mapDispatchToProps = dispatch => ({
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerificarEticket);
