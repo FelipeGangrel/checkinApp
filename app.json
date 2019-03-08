@@ -25,10 +25,10 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.sivis.t4y-organizador"
+      "bundleIdentifier": "com.sivis.t4yorganizador"
     },
     "android": {
-      "package": "com.sivis.t4y-organizador",
+      "package": "com.sivis.t4yorganizador",
       "adaptiveIcon": {
         "backgroundColor": "#68327E"
       }
