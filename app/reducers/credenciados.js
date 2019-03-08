@@ -289,10 +289,11 @@ const updateCredenciado = credenciado => {
         if (response.data.success) {
           const { credenciadosTotal, credenciadosPresentes } = response.data;
           const c = response.data.data[0];
+          console.log('c', c);
           // só atualizar lista caso o dado retornado seja realmente de um credendiaco
-          if (c) {
+          if (c != undefined) {
             const credenciado = {
-              id: c.id | null,
+              id: c.id,
               nome: c.nome,
               email: c.email,
               sexo: c.sexo,
