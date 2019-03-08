@@ -15,7 +15,6 @@ class AppContent extends React.Component {
   }
 
   _forceReset = () => {
-    console.log("resetando tudo");
     const { authReset, credenciadosReset, eventosReset } = this.props;
     authReset();
     credenciadosReset();

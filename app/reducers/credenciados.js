@@ -265,8 +265,6 @@ const filterLista = filter => {
 
 const updateCredenciado = credenciado => {
 
-  console.log('credenciado', credenciado);
-
   return function (dispatch, getState) {
 
     const activeAmbiente = getState().eventos.activeAmbiente;
@@ -289,7 +287,6 @@ const updateCredenciado = credenciado => {
         if (response.data.success) {
           const { credenciadosTotal, credenciadosPresentes } = response.data;
           const c = response.data.data[0];
-          console.log('c', c);
           // só atualizar lista caso o dado retornado seja realmente de um credendiaco
           if (c != undefined) {
             const credenciado = {

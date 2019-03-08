@@ -22,8 +22,6 @@ class Home extends React.Component {
     let percentual = Number(credenciadosPresentes) / Number(credenciadosTotal);
     if (isNaN(percentual)) percentual = 0;
 
-    console.log('perentual', percentual);
-
     return (
       <SafeAreaView style={styles.safeAreaView}>
         <View style={styles.mainRow}>

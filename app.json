@@ -29,8 +29,10 @@
     },
     "android": {
       "package": "com.sivis.t4yorganizador",
+      "icon": "./assets/icon.png",
       "adaptiveIcon": {
-        "backgroundColor": "#68327E"
+        "backgroundColor": "#68327E",
+        "foregroundImage": "./assets/icon.png"
       }
     },
     "description": "Gerencie as entradas e saídas de credenciados em seu evento da Ticket4You"

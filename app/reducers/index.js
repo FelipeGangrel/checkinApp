@@ -12,7 +12,7 @@ const appReducer = combineReducers({
 
 const rootReducer = (state, action) => {
 
-  console.log("action: ", action.type);
+  // console.log("action: ", action.type);
 
   if (action.type === "USER_LOGOUT") {
     Object.keys(state).forEach(key => {

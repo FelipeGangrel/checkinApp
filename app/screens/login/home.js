@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
+  ImageBackground,
 } from "react-native";
 import { LinearGradient } from "expo";
 import { connect } from "react-redux";
@@ -29,7 +30,6 @@ class Home extends React.Component {
 
   componentDidUpdate() {
     const { hasError, clearError } = this.props;
-    console.log('hasError', hasError);
     if (hasError) {
       clearError();
       Alert.alert(
@@ -68,10 +68,7 @@ class Home extends React.Component {
   
     return (
       <View style={{ flex: 1 }}>
-        <LinearGradient
-          style={{ flex: 1 }}
-          colors={[colors.primary.base, colors.primary.alternative]}
-        >
+        <ImageBackground source={require("../../../assets/splash.png")} style={{width: '100%', height: '100%'}}>
           <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.containerScreen}>
               <View style={styles.containerForm}>
@@ -127,7 +124,7 @@ class Home extends React.Component {
               />
             </View>
           </SafeAreaView>
-        </LinearGradient>
+        </ImageBackground>
       </View>
     );
   }

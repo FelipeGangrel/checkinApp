@@ -1,5 +1,5 @@
 import { credenciadosActions } from "./credenciados";
- 
+
 const INITIAL_STATE = {
   events: [],
   activeEvent: null,

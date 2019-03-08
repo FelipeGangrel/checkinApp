@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import API_URL from "./api-paths";
 
 const INITIAL_STATE = {
@@ -156,11 +157,16 @@ const signInUser = user => {
           nome: nome_pessoa
         };
 
-        const events = list_sf_pessoa_eventos.map(event => ({
-          id: event.id_evento.id,
-          nome: event.id_evento.nome_evento,
-          ambientes: event.ambientes,
-        }));
+        const events = list_sf_pessoa_eventos
+          .filter(event => {
+            const fim = moment(event.id_evento.data_fim, 'DD/MM/YYYY HH:mm', true).format();
+            return moment().diff(fim) < 0;
+          })
+          .map(event => ({
+            id: event.id_evento.id,
+            nome: event.id_evento.nome_evento,
+            ambientes: event.ambientes,
+          }));
 
         // se o usuário puder gerenciar apenas um evento, defini-lo de uma vez como ativo
         const activeEvent = events.length === 1 ? events[0] : null;
