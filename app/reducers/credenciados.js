@@ -204,7 +204,6 @@ const _updateCredenciado = credenciado =>({
   credenciado,
 });
 
-
 // métodos expostos
 
 const fetchListaFromStart = () => {
@@ -266,6 +265,8 @@ const filterLista = filter => {
 
 const updateCredenciado = credenciado => {
 
+  console.log('credenciado', credenciado);
+
   return function (dispatch, getState) {
 
     const activeAmbiente = getState().eventos.activeAmbiente;
@@ -286,24 +287,28 @@ const updateCredenciado = credenciado => {
       .post(postUrl, formData)
       .then(response => {
         if (response.data.success) {
-          const c = response.data.data[0];
           const { credenciadosTotal, credenciadosPresentes } = response.data;
-          const credenciado = {
-            id: c.id,
-            nome: c.nome,
-            email: c.email,
-            sexo: c.sexo,
-            empresa: c.empresa,
-            ingresso: c.ingresso,
-            necessidadesEspeciais: c.necessidades_especiais,
-            presente: c.presente,
-            eticket: c.eticket,
-            avatar: {
-              thumbnail: c.thumbnail
-            },
-          };
+          const c = response.data.data[0];
+          // só atualizar lista caso o dado retornado seja realmente de um credendiaco
+          if (c) {
+            const credenciado = {
+              id: c.id | null,
+              nome: c.nome,
+              email: c.email,
+              sexo: c.sexo,
+              empresa: c.empresa,
+              ingresso: c.ingresso,
+              necessidadesEspeciais: c.necessidades_especiais,
+              presente: c.presente,
+              eticket: c.eticket,
+              isCredenciado: c.isCredenciado,
+              avatar: {
+                thumbnail: c.thumbnail
+              },
+            };
+            dispatch(_updateCredenciado(credenciado));
+          }
           dispatch(_updateResumoTotais({ credenciadosTotal, credenciadosPresentes }));
-          dispatch(_updateCredenciado(credenciado));
         }
 
         if (response.data.error != null) {
