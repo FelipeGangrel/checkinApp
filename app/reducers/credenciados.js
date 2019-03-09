@@ -234,8 +234,6 @@ const fetchLista = () => {
         ? getState().eventos.activeAmbiente.id
         : null;
 
-      // const fetchUrl = `https://randomuser.me/api/?seed=2&page=${page}&results=${perPage}`;
-
       let fetchUrl = `${API_URL}Api/Controller/APIExterna/AppCheckin/Credenciados.php?functionPage=Listar&page=${page}&evento=${evento}`;
       if (ambiente) fetchUrl += `&ambiente=${ambiente}`;
       if (filter != "") fetchUrl += `&search=${filter}`;
