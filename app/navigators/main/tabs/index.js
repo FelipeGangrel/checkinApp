@@ -34,7 +34,7 @@ export default createMaterialTopTabNavigator(
     },
   },
   {
-    swipeEnabled: false,
+    swipeEnabled: true,
     tabBarPosition: "bottom",
     tabBarOptions: {
       activeTintColor: colors.primary.base,

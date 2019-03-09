@@ -50,7 +50,7 @@ class Credenciado extends React.PureComponent {
     const { credenciado } = this.state;
 
     const buttonTitle = credenciado.presente
-      ? "CHECKOUT" : "CHECKIN";
+      ? "FAZER CHECK-OUT" : "FAZER CHECK-IN";
     
     const colorVariant = credenciado.presente
       ? "dark" : "success";
