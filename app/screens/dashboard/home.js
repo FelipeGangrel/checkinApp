@@ -26,8 +26,7 @@ class Home extends React.Component {
     if (isNaN(percentual)) percentual = 0;
 
     const evento = <Text style={styles.eventoText}>{activeEvent.nome}</Text>;
-    const ambiente = <Text style={styles.eventoText}>Apenas um teste</Text>
-    // const ambiente = activeAmbiente != null ? <Text>{activeAmbiente.nome}</Text> : <View></View>;
+    const ambiente = activeAmbiente != null ? <Text>{activeAmbiente.nome}</Text> : <View></View>;
 
     return (
       <SafeAreaView style={styles.safeAreaView}>
