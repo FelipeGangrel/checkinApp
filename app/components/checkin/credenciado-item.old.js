@@ -19,21 +19,13 @@ export default class CredenciadoItem extends React.PureComponent {
 
   // este método se comunica com o componente pai
   _handleRightButtonPress = () => {
-    const { id, eticket } = this.props.credenciado;
+    const { id, presente, eticket } = this.props.credenciado;
     this.props.onCredenciadoUpdate({
       id,
       eticket,
-      presente: true,
+      presente: !presente,
     });
-  };
-
-  _handleLeftButtonPress = () => {
-    const { id, eticket } = this.props.credenciado;
-    this.props.onCredenciadoUpdate({
-      id,
-      eticket,
-      presente: false,
-    });
+    
   };
 
   // este método se comunica com o componente pai
@@ -46,7 +38,7 @@ export default class CredenciadoItem extends React.PureComponent {
     const { credenciado } = this.props;
 
     const that = this;
-    setTimeout(function () {
+    setTimeout(function() {
       that._resetSwipeablePosition();
     }, 500);
 
@@ -58,51 +50,41 @@ export default class CredenciadoItem extends React.PureComponent {
 
     let color = "#FFFFFF";
 
-    const leftContent = ([
-      <TouchableOpacity onPress={this._handleLeftButtonPress}
-        style={[styles.buttons, { backgroundColor: "#e74c3c", alignItems: "flex-end" }]}
-      >
-        <View style={[styles.buttonContent]}>
-          <MaterialIcons name="close" size={25} color={color} />
-          <Text style={{ color: color, fontSize: 10 }}>FAZER CHECK-OUT</Text>
-        </View>
-      </TouchableOpacity>
-    ]);
-
     const rightContent = ([
       <TouchableOpacity onPress={this._handleRightButtonPress}
-        style={[styles.buttons, { backgroundColor: "#2ecc71" }]}
+        style={[styles.rightButtons, { backgroundColor: backgroundColor }]}
       >
-        <View style={styles.buttonContent}>
-          <MaterialIcons name="check" size={25} color={color} />
-          <Text style={{ color: color, fontSize: 10 }}>FAZER CHECK-IN</Text>
-        </View>
+        {credenciado.presente ? (
+          <View style={styles.buttonContent}>
+            <MaterialIcons name="close" size={25} color={color} />
+            <Text style={{ color: color, fontSize: 10 }}>FAZER CHECK-OUT</Text>
+          </View>
+        ) : (
+          <View style={styles.buttonContent}>
+            <MaterialIcons name="check" size={25} color={color} />
+            <Text style={{ color: color, fontSize: 10 }}>FAZER CHECK-IN</Text>
+          </View>
+        )}
       </TouchableOpacity>
     ]);
-
     
-
     const title = <Text numberOfLines={1}>{credenciado.nome}</Text>;
     const subtitle = <Text numberOfLines={1}>{credenciado.email}</Text>
 
     return (
       <Swipeable onRef={ref => this.swipeable = ref}
-        leftButtons={leftContent}
-        leftButtonWidth={110}
-        leftButtonsActivationDistance={30}
         rightButtons={rightContent}
         rightButtonWidth={110}
-        rightButtonsActivationDistance={30}
       >
         <ListItem
           roundAvatar
-          leftAvatar={{ source: { uri: credenciado.avatar.thumbnail } }}
+          leftAvatar={{ source: { uri: credenciado.avatar.thumbnail }}}
           title={title}
           subtitle={subtitle}
-
+          
           rightIcon={checkIcon}
           containerStyle={{ marginVertical: 0, borderBottomColor: "#e5e5e5" }}
-          onPress={this._handleOnPress}
+          onPress={ this._handleOnPress }
         />
       </Swipeable>
     );
@@ -116,12 +98,12 @@ const styles = StyleSheet.create({
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     elevation: 30
   },
-  buttons: {
+  rightButtons: {
     flex: 1,
     justifyContent: "center",
   },
   buttonContent: {
-    flex: 1,
+    flex: 1, 
     justifyContent: "center",
     alignItems: "center",
     width: 110,
