@@ -51,7 +51,7 @@ class CredenciadosSearch extends React.Component {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    backgroundColor: "transparent",
+    backgroundColor: "white",
     marginVertical: 0,
     borderBottomWidth: 0,
     borderTopWidth: 0,
