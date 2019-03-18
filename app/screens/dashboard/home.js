@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, SafeAreaView, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, SafeAreaView, TouchableOpacity, Text, ImageBackground } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { colors } from "../../colors";
 import DrawerButton from "../../components/drawer-button";
@@ -27,24 +27,32 @@ class Home extends React.Component {
 
     const evento = <Text style={styles.eventoText}>{activeEvent.nome}</Text>;
     const ambiente = activeAmbiente != null ? <Text>{activeAmbiente.nome}</Text> : <View></View>;
+    const eventoBanner = `https://ticket4you.com.br/web/Contratos/${activeEvent.id}/img/banner.png`;
 
     return (
       <SafeAreaView style={styles.safeAreaView}>
-        <View style={styles.evento}>
-          {evento}
-          {ambiente}
-        </View>
-        <View style={styles.mainRow}>
-          <CheckinChartPercentual percentual={percentual} />
-          <CheckinTotais total={credenciadosTotal} presentes={credenciadosPresentes} />
-        </View>
-        <TouchableOpacity style={styles.fab}
-          onPress={() => {
-            this.props.navigation.navigate("Leitor");
-          }}
-        >
-          <Ionicons size={30} name="md-qr-scanner" color="#FFFFFF" />
-        </TouchableOpacity>
+        <ImageBackground source={{ uri: eventoBanner }} 
+              style={{ flex: 0, maxWidth: "100%", width: '100%', height: "100%"}}
+              imageStyle={{ resizeMode: "repeat" }}
+            >
+          <View style={styles.evento}>
+            
+            {evento}
+            {ambiente}
+            
+          </View>
+          <View style={styles.mainRow}>
+            <CheckinChartPercentual percentual={percentual} />
+            <CheckinTotais total={credenciadosTotal} presentes={credenciadosPresentes} />
+          </View>
+          <TouchableOpacity style={styles.fab}
+            onPress={() => {
+              this.props.navigation.navigate("Leitor");
+            }}
+          >
+            <Ionicons size={30} name="md-qr-scanner" color="#FFFFFF" />
+          </TouchableOpacity>
+        </ImageBackground>
       </SafeAreaView>
     );
   }
@@ -53,7 +61,7 @@ class Home extends React.Component {
 
 const styles = StyleSheet.create({
   evento: {
-    paddingVertical: 10,
+    paddingVertical: 20,
     flex: 0,
     justifyContent: "space-evenly",
     alignItems: "stretch",
@@ -62,7 +70,11 @@ const styles = StyleSheet.create({
   eventoText: {
     color: colors.light.base,
     paddingVertical: 5,
+    fontWeight: "bold",
     textAlign: "center",
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10
   },
   safeAreaView: {
     flex: 1,
@@ -70,6 +82,7 @@ const styles = StyleSheet.create({
   },
   mainRow: {
     flex: 1,
+    opacity: 1,
     backgroundColor: "white",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
